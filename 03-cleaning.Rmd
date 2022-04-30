@@ -1,1 +1,24 @@
 # Data transformation
+
+
+
+
+
+
+
+
+
+  
+```{r}
+# data transformation for barchart (for events)
+events_data <- metadata %>% 
+  select(DATE,WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN) %>% 
+  pivot_longer(!DATE,names_to = "Park_name", values_to = "events") %>% 
+  drop_na("events") %>% 
+  mutate("Park_name"=replace(Park_name,Park_name=="WDWeventN","Walt Disney World"),
+         "Park_name"=replace(Park_name,Park_name=="MKeventN","Magic Kindom"),
+         "Park_name"=replace(Park_name,Park_name=="EPeventN","Epcot"),
+         "Park_name"=replace(Park_name,Park_name=="HSeventN","Hollywood Studios"),
+         "Park_name"=replace(Park_name,Park_name=="AKeventN","Animal Kindom")
+  )
+```

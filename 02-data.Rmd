@@ -1,2 +1,8 @@
 # Data sources
 
+
+
+```{r}
+# change the path to the url later
+metadata <- read.csv("/Users/ellenazhang/Study/Columbia/5293/final project/metadata.csv", na.strings = "")
+```
