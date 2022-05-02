@@ -1,1 +1,177 @@
 # Data transformation
+```{r, include=FALSE}
+library(lubridate)
+library(tidyverse)
+library(dplyr)
+library(zoo)
+library(gridExtra)
+library(ggplot2)
+library(calendR)
+```
+
+
+```{r}
+#Soarin dataset cleaning
+meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
+
+#Function for loading data depending on different uses
+#Specify "by" for different average computations
+#Default="everyday", if by="none", return the whole dataset
+cleanthis <- function(someurl, by="everyday" ){
+  somedata <- read_csv(someurl, show_col_types = FALSE)
+  df <- somedata %>% select(-SACTMIN) %>% mutate(date=as.Date(datetime)) %>% filter(SPOSTMIN>=0)
+  if (by=="year"){
+    df <- df %>% mutate(year=year(date))%>% group_by(year) %>% summarize(mean_year = mean(SPOSTMIN))
+  }else if(by=="month"){
+      df <- df %>% mutate(month=month(date))%>% group_by(month) %>% summarize(mean_month = mean(SPOSTMIN))
+  }else if(by=="day"){
+      df <- df %>% mutate(day=day(date))%>% group_by(day) %>% summarize(mean_day = mean(SPOSTMIN))
+  }else if(by=="everyday"){
+      df <- df %>% group_by(date) %>% summarize(mean_everyday = mean(SPOSTMIN))
+  }else if(by=="none"){
+    df <- df
+  }else if(by=="hour"){
+    df$hour <- format(as.POSIXct(df$datetime), format = "%H")
+  }
+  
+  return(df)
+}
+
+#Load all attraction waiting time datasets from the website, compute everyday mean
+soarin <- cleanthis("https://cdn.touringplans.com/datasets/soarin.csv") %>%
+  rename(soarin=mean_everyday)
+avatar <- cleanthis("https://cdn.touringplans.com/datasets/flight_of_passage.csv") %>%
+  rename(avatar=mean_everyday)
+dinosaur <- cleanthis("https://cdn.touringplans.com/datasets/dinosaur.csv") %>%
+  rename(dinosaur=mean_everyday)
+ee <- cleanthis("https://cdn.touringplans.com/datasets/expedition_everest.csv") %>%
+  rename(ee=mean_everyday)
+safari <- cleanthis("https://cdn.touringplans.com/datasets/kilimanjaro_safaris.csv")%>% 
+  rename(safari=mean_everyday)
+navi <- cleanthis("https://cdn.touringplans.com/datasets/navi_river.csv")%>%
+  rename(navi=mean_everyday)
+pirate <- cleanthis("https://cdn.touringplans.com/datasets/pirates_of_caribbean.csv")%>% rename(pirate=mean_everyday)
+rnrc <- cleanthis("https://cdn.touringplans.com/datasets/rock_n_rollercoaster.csv")%>%
+  rename(rnrc=mean_everyday)
+sevendwarf <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv")%>% rename(sevendwarf=mean_everyday)
+slinkydog <- cleanthis("https://cdn.touringplans.com/datasets/slinky_dog.csv")%>%
+  rename(slinkydog=mean_everyday)
+spaceship <- cleanthis("https://cdn.touringplans.com/datasets/spaceship_earth.csv")%>%
+  rename(spaceship=mean_everyday)
+splash <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv")%>%
+  rename(splash=mean_everyday)
+toystory <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv")%>% 
+  rename(toystory=mean_everyday)
+
+
+```
+
+```{r}
+#Create empty time data frame to match the rows of all attractions because the data files for each attraction may have NA values for some days
+timedf <- data.frame(date = seq(as.Date('2015-01-01'), as.Date('2021-12-28'), by = 'days'))
+weekofmonth <- function(date){
+  out <- as.integer(strftime(date, format = "%U"))-as.integer(strftime(floor_date(date, unit="months"), format = "%U"))+1
+  return(out)
+}
+timedf$year <- factor(year(timedf$date))
+timedf$month <- factor(month(timedf$date))
+#timedf$weekofmonth <- weekofmonth(timedf$date)
+timedf$weekday <- factor(wday(timedf$date,label = TRUE))
+timedf$weekend <- ifelse(timedf$weekday %in% c("Sat","Sun") , TRUE, FALSE)
+
+######Overall dataset of Daily time of all attractions 
+######Use this one!
+attractions <- left_join(timedf, soarin) %>%left_join(., avatar) %>% 
+  left_join(., dinosaur) %>% left_join(., ee) %>% 
+  left_join(., safari) %>% left_join(., navi) %>% 
+  left_join(., pirate) %>% left_join(., rnrc) %>% 
+  left_join(., sevendwarf) %>% left_join(., slinkydog) %>% 
+  left_join(., spaceship) %>% left_join(., splash) %>% 
+   left_join(., toystory)
+head(attractions)
+```
+
+
+
+
+```{r}
+#Random drawings
+
+soarin_month <- attractions %>% group_by(year, month) %>% summarize(mean_soarin = mean(soarin, na.rm = TRUE))
+
+
+
+#Attraction (soarin) mean waiting time by month(data from all range)
+byyear <- attractions %>% group_by(month) %>% summarize(avg_waiting_time=sum(!is.na(soarin)),) 
+
+library(ggplot2)
+barplot(byyear$avg_waiting_time)
+
+#Bar plot of Soarin by month for all years
+ggplot(byyear, aes(y=avg_waiting_time,x=month))+geom_bar(stat="identity", width=0.8, fill="grey") + ggtitle("Average waiting time of Soarin by month, from 2015 to 2021")
+
+```
+
+```{r}
+#metadata transformation
+
+
+bigmeta <- meta %>% 
+  select(DATE,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWTICKETSEASON,WDWSEASON,HOLIDAYN, WDWMEANTEMP) %>% mutate(DATE=as.Date(bigmeta$DATE, format=c("%m/%d/%Y")))
+
+head(bigmeta)
+```
+
+```{r, include=FALSE}
+#Soarin, 2021 Apr data, by weekend/weekday
+soarin.hour <- cleanthis("https://cdn.touringplans.com/datasets/soarin.csv", by="hour")
+
+soarin.hour$year <- factor(year(soarin.hour$date))
+soarin.hour$month <- factor(month(soarin.hour$date))
+#timedf$weekofmonth <- weekofmonth(timedf$date)
+soarin.hour$weekday <- factor(wday(soarin.hour$date,label = TRUE))
+soarin.hour$weekend <- ifelse(soarin.hour$weekday %in% c("Sat","Sun") , TRUE, FALSE)
+soarin.hour <- left_join(soarin.hour, bigmeta %>% select(DATE, HOLIDAY) %>% rename(date=DATE))
+soarin.hour %>% filter(year==2021 & month==4) %>% group_by(date,weekday) %>% summarize(mean=mean(SPOSTMIN)) %>% arrange(weekday) %>% summarize(max)
+soarin_byhour <- soarin.hour  %>% filter(year==2021) %>% group_by(weekend,hour) %>% summarize(mean = mean(SPOSTMIN))
+
+soarin_dt <- data.frame(hour = as.character(seq(10,23)))
+
+soarin_dt <- left_join(soarin_dt, soarin_byhour %>% filter(weekend==FALSE) %>% select(hour, mean) %>%  rename(weekday = mean) %>% ungroup(), by="hour") %>% select(-weekend)
+soarin_dt <- soarin_dt %>% left_join(., soarin_byhour %>% filter(weekend==TRUE) %>%rename(Weekend_mean = mean), by="hour") %>% select(-weekend)
+soarin_dt
+write.csv(soarin_dt, file="soarin_int.csv")
+barplot(soarin_byhour$mean)
+
+```
+
+```{r}
+#Suppose we want to use Jul 2021 data to see what the waiting time will be if we go this month
+#We selected three classic rides in Magic Kingdom: Pirates of the Caribbean, Seven Dwarfs Mine Train, Splash Mountain
+
+#By hour data, if needed
+pi_hour <- cleanthis("https://cdn.touringplans.com/datasets/pirates_of_caribbean.csv", by="hour") 
+
+sd_hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour")
+
+splash_hour <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv", by="hour")
+
+
+
+ride3 <- attractions %>% select(date, year, month, weekday, weekend, pirate, sevendwarf, splash) %>% filter(year==2021 & month ==7) 
+ride3 <- ride3 %>% left_join(., bigmeta %>% filter(YEAR==2021 & MONTHOFYEAR==7) %>% select(DATE, WDWMEANTEMP) %>% rename(date=DATE))
+
+ride3 %>% summarize(mean1=mean(pirate), mean2=mean(sevendwarf), mean3=mean(splash))
+
+```
+
+```{r}
+##daily information of selected attractions
+
+ride3
+try <- pi_hour %>% mutate(year = year(date), month = month(date), weekday = wday(date, label=TRUE), weekend=ifelse(weekday %in% c("Sat","Sun") , TRUE, FALSE)) %>% filter(year==2021 & month==7) %>% group_by(date,hour) %>% summarize(mean=mean(SPOSTMIN))
+
+try <- try %>% pivot_wider( id_cols="date",id_expand=FALSE, values_from = "mean", names_from = "hour")
+
+
+```
