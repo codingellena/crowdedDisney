@@ -1,4 +1,5 @@
 # Data transformation
+<<<<<<< HEAD
 ```{r, include=FALSE}
 library(lubridate)
 library(tidyverse)
@@ -175,3 +176,28 @@ try <- try %>% pivot_wider( id_cols="date",id_expand=FALSE, values_from = "mean"
 
 
 ```
+=======
+
+
+
+
+
+
+
+
+
+  
+```{r}
+# data transformation for barchart (for events)
+events_data <- metadata %>% 
+  select(DATE,WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN) %>% 
+  pivot_longer(!DATE,names_to = "Park_name", values_to = "events") %>% 
+  drop_na("events") %>% 
+  mutate("Park_name"=replace(Park_name,Park_name=="WDWeventN","Walt Disney World"),
+         "Park_name"=replace(Park_name,Park_name=="MKeventN","Magic Kindom"),
+         "Park_name"=replace(Park_name,Park_name=="EPeventN","Epcot"),
+         "Park_name"=replace(Park_name,Park_name=="HSeventN","Hollywood Studios"),
+         "Park_name"=replace(Park_name,Park_name=="AKeventN","Animal Kindom")
+  )
+```
+>>>>>>> e6d7a4f97aff05d8eb5007e5205676bbdc36c321

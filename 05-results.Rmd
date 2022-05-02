@@ -1,1 +1,16 @@
 # Results
+
+
+
+
+```{r}
+# barplot 
+events_data %>% 
+  ggplot(aes(fct_rev(fct_infreq(events)),fill=Park_name))+
+  geom_bar()+
+  coord_flip()+
+  ggtitle("The event in five Disney Park")+
+  xlab("Event name")+
+  scale_fill_brewer(palette = "Accent")
+```
+
