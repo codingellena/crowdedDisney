@@ -9,10 +9,11 @@ events_data %>%
   ggplot(aes(fct_rev(fct_infreq(events)),fill=Park_name))+
   geom_bar()+
   coord_flip()+
-  ggtitle("The event in five Disney Park")+
+  ggtitle("Events in five Disney Parks")+
   xlab("Event name")+
   scale_fill_brewer(palette = "Accent")
 ```
+
 ```{r}
 # time series line plot
 ggplot(attractions_ts,aes(date,waiting_time))+
@@ -23,4 +24,7 @@ ggplot(attractions_ts,aes(date,waiting_time))+
   ggtitle("Waiting time in 2019")+
   theme(axis.text.x = element_text(size = 5),plot.title = element_text(hjust = 0.5))
 ```
+
+
+
 
