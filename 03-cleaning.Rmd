@@ -63,8 +63,6 @@ splash <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv")
   rename(splash=mean_everyday)
 toystory <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv")%>% 
   rename(toystory=mean_everyday)
-
-
 ```
 
 ```{r}
@@ -118,7 +116,7 @@ ggplot(byyear, aes(y=avg_waiting_time,x=month))+geom_bar(stat="identity", width=
 
 
 bigmeta <- meta %>% 
-  select(DATE,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWTICKETSEASON,WDWSEASON,HOLIDAYN, WDWMEANTEMP) %>% mutate(DATE=as.Date(bigmeta$DATE, format=c("%m/%d/%Y")))
+  select(DATE,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWTICKETSEASON,WDWSEASON,HOLIDAYN, WDWMEANTEMP) %>% mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
 
 head(bigmeta)
 ```
@@ -176,7 +174,7 @@ try <- try %>% pivot_wider( id_cols="date",id_expand=FALSE, values_from = "mean"
 
 
 ```
-=======
+
 
 
 
@@ -189,7 +187,7 @@ try <- try %>% pivot_wider( id_cols="date",id_expand=FALSE, values_from = "mean"
   
 ```{r}
 # data transformation for barchart (for events)
-events_data <- metadata %>% 
+events_data <- meta %>% 
   select(DATE,WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN) %>% 
   pivot_longer(!DATE,names_to = "Park_name", values_to = "events") %>% 
   drop_na("events") %>% 
@@ -200,4 +198,15 @@ events_data <- metadata %>%
          "Park_name"=replace(Park_name,Park_name=="AKeventN","Animal Kindom")
   )
 ```
->>>>>>> e6d7a4f97aff05d8eb5007e5205676bbdc36c321
+
+
+```{r}
+# data transformation for time series line plot
+attractions_ts<-attractions %>% 
+  filter(year=="2019") %>% 
+  select(-c(year,month, weekday,weekend)) %>% 
+  pivot_longer(-date,names_to = "attraction", values_to = "waiting_time") %>% 
+  mutate(attraction=fct_reorder(attraction,waiting_time,median),attraction=fct_relevel(attraction,"ee",after=4))
+```
+
+=======

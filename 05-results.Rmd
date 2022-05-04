@@ -13,4 +13,14 @@ events_data %>%
   xlab("Event name")+
   scale_fill_brewer(palette = "Accent")
 ```
+```{r}
+# time series line plot
+ggplot(attractions_ts,aes(date,waiting_time))+
+  geom_line()+
+  scale_x_date(date_breaks = "3 months",date_labels = "%m")+
+  facet_grid(~attraction)+
+  ylab("waiting time")+
+  ggtitle("Waiting time in 2019")+
+  theme(axis.text.x = element_text(size = 5),plot.title = element_text(hjust = 0.5))
+```
 

@@ -3,6 +3,5 @@
 
 
 ```{r}
-# change the path to the url later
-metadata <- read.csv("/Users/ellenazhang/Study/Columbia/5293/final project/metadata.csv", na.strings = "")
+meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
 ```
