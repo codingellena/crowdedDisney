@@ -16,15 +16,38 @@ events_data %>%
 
 ```{r}
 # time series line plot
-ggplot(attractions_ts,aes(date,waiting_time))+
+ggplot(attractions_ts,aes(date,waiting_time,color=attraction))+
   geom_line()+
   scale_x_date(date_breaks = "3 months",date_labels = "%m")+
-  facet_grid(~attraction)+
+  #facet_grid(~attraction)+
   ylab("waiting time")+
   ggtitle("Waiting time in 2019")+
   theme(axis.text.x = element_text(size = 5),plot.title = element_text(hjust = 0.5))
 ```
 
+```{r}
+# time series line plot
+ggplot(attractions_ts,aes(date,waiting_time))+
+  geom_line()+
+  scale_x_date(date_breaks = "3 months",date_labels = "%m")+
+  facet_grid(~attraction)+
+  geom_smooth(se=F)+
+  ylab("waiting time")+
+  ggtitle("Waiting time for each attraction in 2019")+
+  theme(axis.text.x = element_text(size = 5),plot.title = element_text(hjust = 0.5))
+```
 
-
+```{r}
+# label by day of week
+attractions %>% 
+  select(date,soarin) %>% 
+  filter(date>=as.Date("2021-07-01")&date<=("2021-07-31")) %>% 
+  ggplot(aes(date,soarin))+
+  geom_label(aes(label=wday(date,label=T)))+
+  geom_line(color="cornflowerblue")+
+  scale_x_date(date_labels="%b\n%d",date_breaks = "1 day")+
+  ggtitle("Waiting time of Soarin in July 2021")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  ylab("waiting time (min)")
+```
 
