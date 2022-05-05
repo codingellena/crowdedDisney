@@ -13,6 +13,8 @@ events_data %>%
   xlab("Event name")+
   scale_fill_brewer(palette = "Accent")
 ```
+The bar chart above shows 
+
 
 ```{r}
 # time series line plot
