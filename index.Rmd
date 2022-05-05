@@ -6,4 +6,8 @@ site: bookdown::bookdown_site
 ---
 
 # Introduction
+Welcome to our webpage! This is the Eva Dai and Yixuan Zhang from STAT GR5293 Statistical Graphics of Columbia University, SPRING 2022. In this project, we will focus on the question of crowdedness of Disney World using graphical techniques we learned in this class. 
 
+Walt Disney World has always been a popular site for vacation for children and adults. The four parks in Disney World have all kinds of rides for you to choose! However, waiting time is always concern for the prospective visitors. Wondering what month will be the best to visit without a long line for each ride? Or thinking about visiting on weekdays to avoid the crowd? In this final project, we will tell you some hidden patterns of the waiting time of some popular rides in Walt Disney World located in Orlando. Hope this can help to plan your next visit!
+
+In this project, we have selected 12 classic rides from the four parks of Walt Disney World: Magic Kingdom, Epcot, Hollywood Studios and Animal Kingdom. We will use graphical techniques such as bar chart, multiple boxplot, time series plot, biplot, histogram, and interactive plot to analyze not only the waiting time patterns of individual rides, but also waiting patterns of the entire park based on hour, day, month or year. You will definitely get some unexpected conclusions after reading this project! 

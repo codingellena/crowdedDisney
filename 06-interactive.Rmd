@@ -1,10 +1,13 @@
 #Interactive
 
-  Planning to visit Walt Disney World in Orlando this summer but afraid of the long line? Or wondering the waiting time is shorter on weekdays? Visit this link below to study the waiting pattern!  
+Click on this link below:
+https://vizhub.com/evadai55/cc4cacf3bbdf431f9d25d60b61da410d?edit=files&file=index.html&mode=full
+
+  Planning to visit Walt Disney World in Orlando this summer but afraid of the long line? Or wondering the waiting time is shorter on weekdays? Visit this link to study the waiting pattern!  
   
   Here is a visualization of the real waiting time of some popular rides in Jul 2021. From this graph, you can see average daily waiting time of each ride of Jul 2021. The graph also tells information such as date, day of week, temperature of the day, as well as mean waiting time of the month.  
   
-  We selected three classic rides in Magic Kingdom: Pirates of the Caribbean, Seven Dwarfs Mine Train and Splash Mountain. We used to believe that waiting time on weekends are usually longer than on weekdays. However, from our analysis , we found an interesting fact that the waiting time at weekends are actually shorter! 
+  We selected three classic rides in Magic Kingdom: Pirates of the Caribbean, Seven Dwarfs Mine Train and Splash Mountain. We used to believe that waiting time on weekends are usually longer than on weekdays. However, from our analysis, we found an interesting fact that the waiting time at weekends are actually shorter. 
+  
+  Thus if you are planning to visit Disney World this summer, we recommend you to go on weekends, and preferably early July since the waiting averages are lower. Given the past data of Jul 2021, the average waiting time is around 38 minutes for "Pirates of the Caribbean", 78 minutes for "Seven Dwarf Mining Train" and 66 minutes for "Splash Mountain". Thus if you are in the park and see the posted waiting time shorter than these numbers, just join the line!
 
-Click on this link below:
-https://vizhub.com/evadai55/cc4cacf3bbdf431f9d25d60b61da410d?edit=files&file=index.html&mode=full
