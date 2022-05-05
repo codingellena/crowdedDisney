@@ -11,4 +11,8 @@ missing-values
 missing-patterns
 assessment-of-impact
 results
+waiting-time-analysis
+ticket-price
+waiting-duration-ratio
+events-in-disney
 conclusion
