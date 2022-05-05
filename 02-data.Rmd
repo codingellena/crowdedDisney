@@ -3,5 +3,6 @@
 
 
 ```{r}
+library(tidyverse)
 meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
 ```
