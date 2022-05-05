@@ -51,3 +51,12 @@ attractions %>%
   ylab("waiting time (min)")
 ```
 
+```{r}
+library(vcd)
+mosaic(ticket_price~DAYOFWEEK, direction=c("v","h"), mosaic_ticketprice,
+       rot_labels=c(0,0,0,0),
+       highlighting_fill=c("steelblue","lightblue","white"),
+       main = "Day of week vs Ticket price"
+       )
+```
+
