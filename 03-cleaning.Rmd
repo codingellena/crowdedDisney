@@ -12,7 +12,7 @@ library(calendR)
 
 
 ```{r}
-#Soarin dataset cleaning
+#load in metadata dataset
 meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
 
 #Function for loading data depending on different uses
@@ -90,6 +90,15 @@ attractions <- left_join(timedf, soarin) %>%left_join(., avatar) %>%
 head(attractions)
 ```
 
+```{r}
+#load entity dataset
+entities <- read_csv("https://cdn.touringplans.com/datasets/entities.csv")
+ratio_data<-entities %>% 
+  mutate(`ratio`=round(average_wait_per_hundred/duration,2)) %>% 
+  select(short_name,land,ratio) %>% 
+  drop_na() %>% 
+  distinct(short_name,.keep_all = TRUE)
+```
 
 
 
@@ -116,7 +125,7 @@ ggplot(byyear, aes(y=avg_waiting_time,x=month))+geom_bar(stat="identity", width=
 
 
 bigmeta <- meta %>% 
-  select(DATE,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWTICKETSEASON,WDWSEASON,HOLIDAYN, WDWMEANTEMP) %>% mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
+  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWTICKETSEASON,WDWSEASON,HOLIDAYN, WDWMEANTEMP) %>% mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
 
 head(bigmeta)
 ```
@@ -207,6 +216,15 @@ attractions_ts<-attractions %>%
   select(-c(year,month, weekday,weekend)) %>% 
   pivot_longer(-date,names_to = "attraction", values_to = "waiting_time") %>% 
   mutate(attraction=fct_reorder(attraction,waiting_time,median),attraction=fct_relevel(attraction,"ee",after=4))
+```
+
+```{r}
+# data transformation for mosaic plot
+mosaic_ticketprice<-bigmeta %>% 
+  drop_na() %>% 
+  group_by(DAYOFWEEK,WDW_TICKET_SEASON) %>% 
+  rename(ticket_price=WDW_TICKET_SEASON) %>% 
+  summarise(Freq=n())
 ```
 
 =======

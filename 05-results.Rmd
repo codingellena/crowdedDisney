@@ -59,4 +59,14 @@ mosaic(ticket_price~DAYOFWEEK, direction=c("v","h"), mosaic_ticketprice,
        main = "Day of week vs Ticket price"
        )
 ```
+```{r}
+#cleveland dot plot on ratio data
+ggplot(ratio_data,
+       aes(x=ratio,y=fct_reorder(short_name,ratio,.desc = FALSE)))+
+  geom_point()+
+  geom_vline(aes(xintercept=1),color="#990000",linetype="dashed")+
+  ylab("")+
+  theme(axis.text=element_text(size=5))+
+  ggtitle("Cleveland dot plot of waiting time/ duration ratio")
+```
 
