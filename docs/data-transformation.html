@@ -84,9 +84,12 @@
 <li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#metadata"><i class="fa fa-check"></i><b>3.1</b> Metadata<span></span></a></li>
 <li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#attraction-specific-data"><i class="fa fa-check"></i><b>3.2</b> Attraction specific data<span></span></a></li>
 <li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#entities-dataset"><i class="fa fa-check"></i><b>3.3</b> Entities dataset<span></span></a></li>
-<li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#plot-specific-data"><i class="fa fa-check"></i><b>3.4</b> Plot specific data<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#missing-patterns"><i class="fa fa-check"></i><b>4.1</b> Missing patterns<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#assessment-of-impact"><i class="fa fa-check"></i><b>4.2</b> Assessment of impact<span></span></a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion<span></span></a></li>
 <li class="divider"></li>
@@ -113,7 +116,7 @@
 <div id="metadata" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Metadata<a href="data-transformation.html#metadata" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For the metadata dataset, we filter out the features that we will use for visualization from the total 149 columns, focusing on date, ticket price, holiday type, temperature and event information. The date data is transformed into “%m/%d/%Y” format, which help us address it.</p>
-<pre><code>## # A tibble: 6 × 18
+<pre><code>## # A tibble: 6 × 16
 ##   DATE       WDW_TICKET_SEASON DAYOFWEEK DAYOFYEAR WEEKOFYEAR MONTHOFYEAR  YEAR
 ##   &lt;date&gt;     &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
 ## 1 2015-01-01 &lt;NA&gt;                      5         0          0           1  2015
@@ -122,9 +125,9 @@
 ## 4 2015-01-04 &lt;NA&gt;                      1         3          1           1  2015
 ## 5 2015-01-05 &lt;NA&gt;                      2         4          1           1  2015
 ## 6 2015-01-06 &lt;NA&gt;                      3         5          1           1  2015
-## # … with 11 more variables: HOLIDAYPX &lt;dbl&gt;, HOLIDAYM &lt;dbl&gt;, HOLIDAY &lt;dbl&gt;,
-## #   WDWSEASON &lt;chr&gt;, HOLIDAYN &lt;chr&gt;, WDWMEANTEMP &lt;dbl&gt;, WDWeventN &lt;chr&gt;,
-## #   MKeventN &lt;chr&gt;, EPeventN &lt;chr&gt;, HSeventN &lt;chr&gt;, AKeventN &lt;chr&gt;</code></pre>
+## # … with 9 more variables: HOLIDAYPX &lt;dbl&gt;, HOLIDAYM &lt;dbl&gt;, HOLIDAY &lt;dbl&gt;,
+## #   WDWMEANTEMP &lt;dbl&gt;, WDWeventN &lt;chr&gt;, MKeventN &lt;chr&gt;, EPeventN &lt;chr&gt;,
+## #   HSeventN &lt;chr&gt;, AKeventN &lt;chr&gt;</code></pre>
 </div>
 <div id="attraction-specific-data" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Attraction specific data<a href="data-transformation.html#attraction-specific-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -159,43 +162,6 @@
 ## 4 Kali River Rapids      Asia              0.5 
 ## 5 DINOSAUR               DinoLand U.S.A.   0.86
 ## 6 TriceraTop Spin        DinoLand U.S.A.   6.67</code></pre>
-</div>
-<div id="plot-specific-data" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Plot specific data<a href="data-transformation.html#plot-specific-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre><code>##      mean1    mean2    mean3
-## 1 37.66019 77.68942 66.36261</code></pre>
-<pre><code>##          date year month weekday weekend   pirate sevendwarf   splash WDWMEANTEMP
-## 1  2021-07-01 2021     7     Thu   FALSE 20.85271   64.38202 47.62931       83.50
-## 2  2021-07-02 2021     7     Fri   FALSE 22.08333   60.78125 50.55000       83.50
-## 3  2021-07-03 2021     7     Sat    TRUE 14.16667   56.04938 32.30392       83.73
-## 4  2021-07-04 2021     7     Sun    TRUE 20.34091   62.27273 55.96154       82.91
-## 5  2021-07-05 2021     7     Mon   FALSE 21.10687   61.50794 45.82353       80.66
-## 6  2021-07-06 2021     7     Tue   FALSE 25.00000   66.12000 41.00806       81.53
-## 7  2021-07-07 2021     7     Wed   FALSE 27.63566   62.79412 59.43478       80.26
-## 8  2021-07-08 2021     7     Thu   FALSE 37.91667   77.35955 67.40000       83.42
-## 9  2021-07-09 2021     7     Fri   FALSE 36.01626   71.54167 60.95041       83.88
-## 10 2021-07-10 2021     7     Sat    TRUE 35.66667   62.61719 54.77273       83.26
-## 11 2021-07-11 2021     7     Sun    TRUE 32.79070   72.54386 65.76531       84.06
-## 12 2021-07-12 2021     7     Mon   FALSE 36.95652   78.11321 63.01724       84.72
-## 13 2021-07-13 2021     7     Tue   FALSE 41.52000   79.38017 74.25439       84.63
-## 14 2021-07-14 2021     7     Wed   FALSE 44.79675   79.09091 63.40708       83.77
-## 15 2021-07-15 2021     7     Thu   FALSE 45.37190   78.67521 82.59804       81.85
-## 16 2021-07-16 2021     7     Fri   FALSE 37.88618   76.86992 75.67797       83.45
-## 17 2021-07-17 2021     7     Sat    TRUE 33.81944   75.36765 61.90141       82.28
-## 18 2021-07-18 2021     7     Sun    TRUE 36.62791   72.97297 61.86364       84.33
-## 19 2021-07-19 2021     7     Mon   FALSE 55.59701   84.85437 67.27273       82.02
-## 20 2021-07-20 2021     7     Tue   FALSE 44.49612   83.21101 81.06195       82.24
-## 21 2021-07-21 2021     7     Wed   FALSE 47.26190   93.20225 97.50000       81.59
-## 22 2021-07-22 2021     7     Thu   FALSE 54.55357   87.68293 82.00000       79.67
-## 23 2021-07-23 2021     7     Fri   FALSE 39.36508   82.17391 75.90000       81.25
-## 24 2021-07-24 2021     7     Sat    TRUE 38.47107   78.79310 69.59016       81.73
-## 25 2021-07-25 2021     7     Sun    TRUE 38.12500   79.22414 68.29167       81.86
-## 26 2021-07-26 2021     7     Mon   FALSE 45.60150   87.41935 77.27273       82.83
-## 27 2021-07-27 2021     7     Tue   FALSE 56.64234   99.51923 69.10714       83.43
-## 28 2021-07-28 2021     7     Wed   FALSE 49.69027   96.76768 82.47664       83.12
-## 29 2021-07-29 2021     7     Thu   FALSE 52.85714  103.92045 74.61165       83.47
-## 30 2021-07-30 2021     7     Fri   FALSE 39.72222   95.16393 78.31776       83.74
-## 31 2021-07-31 2021     7     Sat    TRUE 34.52756   78.00000 69.51923       82.44</code></pre>
 
 </div>
 </div>

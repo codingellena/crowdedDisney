@@ -22,7 +22,8 @@ meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
 ```{r}
 #metadata transformation
 bigmeta <- meta %>% 
-  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY,WDWSEASON,HOLIDAYN, WDWMEANTEMP, WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN) %>% mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
+  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWMEANTEMP, WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN)%>%
+  mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
 
 head(bigmeta)
 ```
