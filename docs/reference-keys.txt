@@ -1,6 +1,13 @@
 introduction
 data-sources
+data-link
+basic-information
+foreseeing-issues-or-problems
 data-transformation
+metadata
+attraction-specific-data
+entities-dataset
+plot-specific-data
 missing-values
 results
 conclusion

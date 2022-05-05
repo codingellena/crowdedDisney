@@ -73,8 +73,19 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a></li>
-<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#data-link"><i class="fa fa-check"></i><b>2.1</b> Data link<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#basic-information"><i class="fa fa-check"></i><b>2.2</b> Basic information<span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="data-sources.html"><a href="data-sources.html#foreseeing-issues-or-problems"><i class="fa fa-check"></i><b>2.3</b> Foreseeing issues or problems<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#metadata"><i class="fa fa-check"></i><b>3.1</b> Metadata<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#attraction-specific-data"><i class="fa fa-check"></i><b>3.2</b> Attraction specific data<span></span></a></li>
+<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#entities-dataset"><i class="fa fa-check"></i><b>3.3</b> Entities dataset<span></span></a></li>
+<li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#plot-specific-data"><i class="fa fa-check"></i><b>3.4</b> Plot specific data<span></span></a></li>
+</ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion<span></span></a></li>
@@ -99,6 +110,27 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation<a href="data-transformation.html#data-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="metadata" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Metadata<a href="data-transformation.html#metadata" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For the metadata dataset, we filter out the features that we will use for visualization from the total 149 columns, focusing on date, ticket price, holiday type, temperature and event information. The date data is transformed into “%m/%d/%Y” format, which help us address it.</p>
+<pre><code>## # A tibble: 6 × 18
+##   DATE       WDW_TICKET_SEASON DAYOFWEEK DAYOFYEAR WEEKOFYEAR MONTHOFYEAR  YEAR
+##   &lt;date&gt;     &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 2015-01-01 &lt;NA&gt;                      5         0          0           1  2015
+## 2 2015-01-02 &lt;NA&gt;                      6         1          0           1  2015
+## 3 2015-01-03 &lt;NA&gt;                      7         2          0           1  2015
+## 4 2015-01-04 &lt;NA&gt;                      1         3          1           1  2015
+## 5 2015-01-05 &lt;NA&gt;                      2         4          1           1  2015
+## 6 2015-01-06 &lt;NA&gt;                      3         5          1           1  2015
+## # … with 11 more variables: HOLIDAYPX &lt;dbl&gt;, HOLIDAYM &lt;dbl&gt;, HOLIDAY &lt;dbl&gt;,
+## #   WDWSEASON &lt;chr&gt;, HOLIDAYN &lt;chr&gt;, WDWMEANTEMP &lt;dbl&gt;, WDWeventN &lt;chr&gt;,
+## #   MKeventN &lt;chr&gt;, EPeventN &lt;chr&gt;, HSeventN &lt;chr&gt;, AKeventN &lt;chr&gt;</code></pre>
+</div>
+<div id="attraction-specific-data" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Attraction specific data<a href="data-transformation.html#attraction-specific-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For the attraction specific datasets, the data is collected randomly nearly every 10 minutes. This also arise the problem of providing too many data points with about 110 rows each day. We transform the data into the tidy data by different level (hour, day, month, year).</p>
+<p>Besides, we notice that the date in attraction specific datasets is not continuous, there is missing date from 03/14/2020 to 06/26/2020 and from 06/28/2020 to 07/07/2020, from 07/21/2020 to 10/30/2020 and from 01/02/2021 to 04/29/2021. The reasonfor missing is that Disney World was closed in those days because of the Covid-19 pandemic. To address this problem, we fill the DATE to be complete according to the nature of date.</p>
+<p>Finally, we combine the 13 attraction specific data into one dataset, which may provide the option for us to make comparation between different attractions on the same date, and we may also facet on different attractions.</p>
 <pre><code>##         date year month weekday weekend   soarin avatar dinosaur       ee   safari
 ## 1 2015-01-01 2015     1     Thu   FALSE 89.81481     NA 31.15385 40.26882 29.27632
 ## 2 2015-01-02 2015     1     Fri   FALSE 82.38971     NA 26.63158 34.19811 34.15584
@@ -113,18 +145,23 @@
 ## 4   NA 19.70370  5.00000   80.72000        NA  20.34314 29.47761 77.03297
 ## 5   NA 29.35185 62.32143   87.37069        NA  17.28723  5.00000 74.00990
 ## 6   NA 24.48454 61.42857   79.61538        NA  14.86607       NA 71.91860</code></pre>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre><code>## # A tibble: 6 × 14
-##   DATE       WDW_TICKET_SEASON DAYOFWEEK DAYOFYEAR WEEKOFYEAR MONTHOFYEAR  YEAR
-##   &lt;date&gt;     &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
-## 1 2015-01-01 &lt;NA&gt;                      5         0          0           1  2015
-## 2 2015-01-02 &lt;NA&gt;                      6         1          0           1  2015
-## 3 2015-01-03 &lt;NA&gt;                      7         2          0           1  2015
-## 4 2015-01-04 &lt;NA&gt;                      1         3          1           1  2015
-## 5 2015-01-05 &lt;NA&gt;                      2         4          1           1  2015
-## 6 2015-01-06 &lt;NA&gt;                      3         5          1           1  2015
-## # … with 7 more variables: HOLIDAYPX &lt;dbl&gt;, HOLIDAYM &lt;dbl&gt;, HOLIDAY &lt;dbl&gt;,
-## #   WDWTICKETSEASON &lt;chr&gt;, WDWSEASON &lt;chr&gt;, HOLIDAYN &lt;chr&gt;, WDWMEANTEMP &lt;dbl&gt;</code></pre>
+</div>
+<div id="entities-dataset" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Entities dataset<a href="data-transformation.html#entities-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For the entities dataset, we add a new column <code>ratio</code> to the dataset by calculating waiting time/duration.</p>
+<p>Besides, the orignal name of the attractions is very long, so we use the <code>short name</code> column instead of the <code>name</code> column. After that, we filter out the column that is useful for the visualization (short_name, land, ratio).</p>
+<pre><code>## # A tibble: 6 × 3
+##   short_name             land             ratio
+##   &lt;chr&gt;                  &lt;chr&gt;            &lt;dbl&gt;
+## 1 It&#39;s Tough to Be a Bug Discovery Island  1.5 
+## 2 Kilimanjaro Safaris    Africa            0.2 
+## 3 Expedition Everest     Asia              1   
+## 4 Kali River Rapids      Asia              0.5 
+## 5 DINOSAUR               DinoLand U.S.A.   0.86
+## 6 TriceraTop Spin        DinoLand U.S.A.   6.67</code></pre>
+</div>
+<div id="plot-specific-data" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Plot specific data<a href="data-transformation.html#plot-specific-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <pre><code>##      mean1    mean2    mean3
 ## 1 37.66019 77.68942 66.36261</code></pre>
 <pre><code>##          date year month weekday weekend   pirate sevendwarf   splash WDWMEANTEMP
@@ -160,6 +197,7 @@
 ## 30 2021-07-30 2021     7     Fri   FALSE 39.72222   95.16393 78.31776       83.74
 ## 31 2021-07-31 2021     7     Sat    TRUE 34.52756   78.00000 69.51923       82.44</code></pre>
 
+</div>
 </div>
             </section>
 

@@ -4,7 +4,8 @@
 ## Data link
 
 Data Link https://touringplans.com/walt-disney-world/crowd-calendar#DataSets
-We get this open data set from touringplans.com, which is a website that monitor the crowd level in both Disneyland and Walt Disney World. Here we study the waiting time of Walt Disney World, which contains five different parks: Magic Kingdom, EPCOT, Disney's Animal Kingdom, Disney's Hollywood Studios and Walt Disney World.
+
+We get this open data set from touringplans.com, which is a website that monitor the crowd level in both Disneyland and Walt Disney World. Here we study the waiting time of Walt Disney World, which contains the following five different parks: Magic Kingdom, EPCOT, Disney's Animal Kingdom, Disney's Hollywood Studios and Walt Disney World.
 
 ## Basic information
 
@@ -20,4 +21,4 @@ There are many missing values in metadata and the missing seems to be periodical
 
 Besides, in attraction specific files, there exists a missing pattern between the feature `waiting time post` and `actual waiting time`, which is, when one feature has value, the other would miss value.
 
-These missing patterns make it difficult to do data visualization and data analysis and we will address these problems in the data transformation section.
+These missing patterns make it difficult to do data visualization and data analysis. We will address these problems in the data transformation and missing value sections.

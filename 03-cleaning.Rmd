@@ -10,11 +10,31 @@ library(ggplot2)
 library(calendR)
 ```
 
+## Metadata
 
-```{r}
+For the metadata dataset, we filter out the features that we will use for visualization from the total 149 columns, focusing on date, ticket price, holiday type, temperature and event information. The date data is transformed into "%m/%d/%Y" format, which help us address it.
+
+```{r, include=FALSE}
 #load in metadata dataset
 meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
+```
 
+```{r}
+#metadata transformation
+bigmeta <- meta %>% 
+  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY,WDWSEASON,HOLIDAYN, WDWMEANTEMP, WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN) %>% mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
+
+head(bigmeta)
+```
+## Attraction specific data
+
+For the attraction specific datasets, the data is collected randomly nearly every 10 minutes. This also arise the problem of providing too many data points with about 110 rows each day. We transform the data into the tidy data by different level (hour, day, month, year). 
+
+Besides, we notice that the date in attraction specific datasets is not continuous, there is missing date from 03/14/2020 to 06/26/2020 and from 06/28/2020 to 07/07/2020, from 07/21/2020 to 10/30/2020 and from 01/02/2021 to 04/29/2021. The reasonfor missing is that Disney World was closed in those days because of the Covid-19 pandemic. To address this problem, we fill the DATE to be complete according to the nature of date. 
+
+Finally, we combine the 13 attraction specific data into one dataset, which may provide the option for us to make comparation between different attractions on the same date, and we may also facet on different attractions.
+
+```{r, include=FALSE}
 #Function for loading data depending on different uses
 #Specify "by" for different average computations
 #Default="everyday", if by="none", return the whole dataset
@@ -34,10 +54,12 @@ cleanthis <- function(someurl, by="everyday" ){
   }else if(by=="hour"){
     df$hour <- format(as.POSIXct(df$datetime), format = "%H")
   }
-  
   return(df)
 }
+```
 
+
+```{r, include=FALSE}
 #Load all attraction waiting time datasets from the website, compute everyday mean
 soarin <- cleanthis("https://cdn.touringplans.com/datasets/soarin.csv") %>%
   rename(soarin=mean_everyday)
@@ -65,7 +87,8 @@ toystory <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv
   rename(toystory=mean_everyday)
 ```
 
-```{r}
+
+```{r, include=FALSE}
 #Create empty time data frame to match the rows of all attractions because the data files for each attraction may have NA values for some days
 timedf <- data.frame(date = seq(as.Date('2015-01-01'), as.Date('2021-12-28'), by = 'days'))
 weekofmonth <- function(date){
@@ -77,7 +100,9 @@ timedf$month <- factor(month(timedf$date))
 #timedf$weekofmonth <- weekofmonth(timedf$date)
 timedf$weekday <- factor(wday(timedf$date,label = TRUE))
 timedf$weekend <- ifelse(timedf$weekday %in% c("Sat","Sun") , TRUE, FALSE)
+```
 
+```{r}
 ######Overall dataset of Daily time of all attractions 
 ######Use this one!
 attractions <- left_join(timedf, soarin) %>%left_join(., avatar) %>% 
@@ -90,6 +115,12 @@ attractions <- left_join(timedf, soarin) %>%left_join(., avatar) %>%
 head(attractions)
 ```
 
+## Entities dataset
+
+For the entities dataset, we add a new column `ratio` to the dataset by calculating waiting time/duration.
+
+Besides, the orignal name of the attractions is very long, so we use the `short name` column instead of the `name` column. After that, we filter out the column that is useful for the visualization (short_name, land, ratio).
+
 ```{r}
 #load entity dataset
 entities <- read_csv("https://cdn.touringplans.com/datasets/entities.csv")
@@ -98,34 +129,9 @@ ratio_data<-entities %>%
   select(short_name,land,ratio) %>% 
   drop_na() %>% 
   distinct(short_name,.keep_all = TRUE)
+head(ratio_data)
 ```
 
-
-
-```{r}
-#Random drawings
-
-soarin_month <- attractions %>% group_by(year, month) %>% summarize(mean_soarin = mean(soarin, na.rm = TRUE))
-
-
-
-#Attraction (soarin) mean waiting time by month(data from all range)
-byyear <- attractions %>% group_by(month) %>% summarize(avg_waiting_time=sum(!is.na(soarin)),) 
-
-library(ggplot2)
-
-#Bar plot of Soarin by month for all years
-ggplot(byyear, aes(y=avg_waiting_time,x=month))+geom_bar(stat="identity", width=0.8, fill="grey") + ggtitle("Average waiting time of Soarin by month, from 2015 to 2021")
-
-```
-
-```{r}
-#metadata transformation
-bigmeta <- meta %>% 
-  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWTICKETSEASON,WDWSEASON,HOLIDAYN, WDWMEANTEMP) %>% mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
-
-head(bigmeta)
-```
 
 ```{r, include=FALSE}
 #Soarin, 2021 Apr data, by weekend/weekday
@@ -147,11 +153,9 @@ soarin_dt <- left_join(soarin_dt, soarin_byhour %>% filter(weekend==FALSE) %>% s
 soarin_dt <- soarin_dt %>% left_join(., soarin_byhour %>% filter(weekend==TRUE) %>%rename(Weekend_mean = mean), by="hour") %>% select(-weekend)
 
 write.csv(soarin_dt, file="soarin_int.csv")
-barplot(soarin_byhour$mean)
-
 ```
 
-```{r}
+```{r, include=FALSE}
 #Suppose we want to use Jul 2021 data to see what the waiting time will be if we go this month
 #We selected three classic rides in Magic Kingdom: Pirates of the Caribbean, Seven Dwarfs Mine Train, Splash Mountain
 
@@ -166,25 +170,23 @@ ride3 <- attractions %>% select(date, year, month, weekday, weekend, pirate, sev
 ride3 <- ride3 %>% left_join(., bigmeta %>% filter(YEAR==2021 & MONTHOFYEAR==7) %>% select(DATE, WDWMEANTEMP) %>% rename(date=DATE))
 
 ride3 %>% summarize(mean1=mean(pirate), mean2=mean(sevendwarf), mean3=mean(splash))
-
 ```
 
-```{r}
+```{r, include=FALSE}
 ##daily information of selected attractions
 
 ride3
 try <- pi_hour %>% mutate(year = year(date), month = month(date), weekday = wday(date, label=TRUE), weekend=ifelse(weekday %in% c("Sat","Sun") , TRUE, FALSE)) %>% filter(year==2021 & month==7) %>% group_by(date,hour) %>% summarize(mean=mean(SPOSTMIN))
 
 try <- try %>% pivot_wider( id_cols="date",id_expand=FALSE, values_from = "mean", names_from = "hour")
-
 ```
 
 
 
   
-```{r}
+```{r, include=FALSE}
 # data transformation for barchart (for events)
-events_data <- meta %>% 
+events_data <- bigmeta %>% 
   select(DATE,WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN) %>% 
   pivot_longer(!DATE,names_to = "Park_name", values_to = "events") %>% 
   drop_na("events") %>% 
@@ -197,7 +199,7 @@ events_data <- meta %>%
 ```
 
 
-```{r}
+```{r, include=FALSE}
 # data transformation for time series line plot
 attractions_ts<-attractions %>% 
   filter(year=="2019") %>% 
@@ -206,10 +208,11 @@ attractions_ts<-attractions %>%
   mutate(attraction=fct_reorder(attraction,waiting_time,median),attraction=fct_relevel(attraction,"ee",after=4))
 ```
 
-```{r}
+
+```{r, include=FALSE}
 # data transformation for mosaic plot
 mosaic_ticketprice<-bigmeta %>% 
-  drop_na() %>% 
+  drop_na(DAYOFWEEK,WDW_TICKET_SEASON) %>% 
   group_by(DAYOFWEEK,WDW_TICKET_SEASON) %>% 
   rename(ticket_price=WDW_TICKET_SEASON) %>% 
   summarise(Freq=n())
