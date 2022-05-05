@@ -14,3 +14,248 @@ events_data %>%
   scale_fill_brewer(palette = "Accent")
 ```
 
+```{r}
+#Seven Dwarf Mining Train waiting time calendar heatmap
+
+ggplot(attractions, aes(weekday, fct_rev(factor(weekofmonth)), fill = sevendwarf)) + 
+  geom_tile(colour = "white") + 
+  facet_grid(year~month) + 
+  scale_fill_gradient(low="#FFE6EE" , high="#bb1919") +
+  ggtitle("Calendar Heatmap of Seven Dwarf Mining Train")+
+  xlab("Weekday")+labs(fill="Average Waiting Time")+
+  ylab("Week Number")+
+  scale_x_discrete(label=function(x) {abbreviate(x, minlength=1, strict = T)})+
+  theme(axis.text=element_text(size=4))
+
+```
+This is a calendar heat map for the waiting time of Seven Dwarf Mining Train, a popular ride located in Magic Kingdom of Walt Disney World. From the calendar heat map for the “Seven Dwarf Mining Train’” ride of Disney World, we can easily see which days have a high average waiting time and which days have a low waiting time. And by comparing different levels of color fill over years, we can see the overall waiting pattern during a year and find which months have lower average waiting time. And we can also compare across years to see the overall crowdness of the year. For instance, the color fills for year 2021 are lighter than the other years, which can be considered directly impacted by the current pandemic. The grey colors represent the missing data, since Disney was impacted by Covid-19 and closed from Mar to July in 2021. Some of the data are missing after then.   
+  
+
+```{r}
+#Soarin by hour
+soarin.hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+avatar.hour <- cleanthis("https://cdn.touringplans.com/datasets/flight_of_passage.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+dinosaur.hour <- cleanthis("https://cdn.touringplans.com/datasets/dinosaur.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+ee.hour <- cleanthis("https://cdn.touringplans.com/datasets/expedition_everest.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+safari.hour <- cleanthis("https://cdn.touringplans.com/datasets/kilimanjaro_safaris.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+navi.hour <- cleanthis("https://cdn.touringplans.com/datasets/navi_river.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+pirate.hour <- cleanthis("https://cdn.touringplans.com/datasets/pirates_of_caribbean.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+rnrc.hour <- cleanthis("https://cdn.touringplans.com/datasets/rock_n_rollercoaster.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+sevendwarf.hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+slinkydog.hour <- cleanthis("https://cdn.touringplans.com/datasets/slinky_dog.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+spaceship.hour <- cleanthis("https://cdn.touringplans.com/datasets/spaceship_earth.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+splash.hour <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+toystory.hour <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+                      
+
+whichyear <- c(2019,2021)
+
+soarin.hour <- soarin.hour %>% filter(year %in% whichyear ) %>% select(year, SPOSTMIN)%>% mutate(ride = "soarin") 
+
+avatar.hour <- avatar.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "avatar") 
+  
+dinosaur.hour <- dinosaur.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "dino") 
+  
+ee.hour <- ee.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "ee") 
+
+safari.hour <- safari.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "safari") 
+
+navi.hour <- navi.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "navi") 
+
+pirate.hour <- pirate.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "pirate") 
+
+rnrc.hour <- rnrc.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "rnrc") 
+
+sevendwarf.hour <- sevendwarf.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "dwarf") 
+
+slinkydog.hour <- slinkydog.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "slinky") 
+
+spaceship.hour <- spaceship.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "space") 
+
+splash.hour <- splash.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "splash") 
+
+toystory.hour<- toystory.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "toy") 
+
+  
+#Multiple Boxplot of year 2019
+#allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, ee.hour, safari.hour ,navi.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour)
+library(tidyverse)
+allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, ee.hour, safari.hour ,navi.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour)  %>%
+  mutate(park = ifelse(ride %in% c("soarin", "spaceship"), "Epcot", 
+                       ifelse(ride %in% c("rnrc", "slinky", "toystory"), "Hollywood Studios", 
+                              ifelse(ride %in% c("avatar", "dinosaur", "ee", "safari", "navi"), "Animal Kingdom", "Magic Kingdom"))))
+
+
+
+scale_x_reordered <- function(..., sep = "___") {
+  reg <- paste0(sep, ".+$")
+  ggplot2::scale_x_discrete(labels = function(x) gsub(reg, "", x), ...)
+}
+
+allinone %>% 
+  ggplot(aes(x=reorder_within(ride,-SPOSTMIN, year, median), y=SPOSTMIN, fill = factor(park)))+
+  geom_boxplot( alpha=0.4, outlier.size=0.5)+
+  scale_x_reordered()+
+  facet_wrap(~year, scales = "free_x")+
+  ggtitle("Multiple boxplot of selected rides")+
+  xlab("Ride")+
+  ylab("Waiting Time (Minutes)")+
+  theme_grey(10)+
+  theme(axis.text.x=element_text(size=7), legend.position = "bottom")+
+  labs(fill = "Park")
+
+
+
+```
+  This is a multiple box plot of selected rides in Walt Disney World in Orlando. We hope that by studying this box plot, our reader can understand the waiting time pattern of each ride, and hopefully this can help for future visits. Because of the pandemic, Disney World was closed from Mar 15 to Jul 10 in 2020. As a consequence, the waiting time data of year 2020 was of less importance of our study and we chose the data of year 2019 and 2021 for comparison.   
+  The plot shows the overall distribution of the average waiting of the selected 12 rides, ordered by their medians. The four different colors stand for the four parks that each ride is located. Each boxplot is plotted from hourly waiting time averages, from Jan 1 to Dec 31. 
+  Comparing the distribution of all rides of the two years, we can see that the average waiting times are slightly lower than in 2019. The interquartile ranges of most rides, such as avatar, slinky dog, seven dwarf mining train, splash mountain, and Expedition Everest, have decreasing trends. This may indicate that there are fewer visitors compared with 2019. One possible reason is that the pandemic is still ongoing, compared with 2019 where there were no health concerns. 
+  What's more, the median of most rides also decrease. The ride with the largest drop in median is Avatar Flight of Passage, located in Animal Kingdom. In 2019, the median is about 125 minutes. And the longest waiting time in 2019 is about 350 minutes! However, in year 2021, the median largely decreases to 70 minutes. Most rides also have decrease in medians.  
+  We can see that all the rides have outliers in the right tails, meaning that there are occurrences with waiting time much longer than usual. This may happen during holiday seasons. Indeed, Avatar has the longest waiting time out of all attractions, with a waiting of around 350 minutes in 2019! Besides, rides such as seven dwarf mining train, Rock'n'Roller Roaster and Splash Mountain have extreme outliers on the right end, which are far from the interquartile range. The distribution of waiting time of these 12 rides are mostly right skewed. This means that most of the shorter waiting times are clustered together, while the longer ones are more scattered. Rides such as dinosaur and spaceship in year 2021 are especially showing these patterns since they have very short waiting times. 
+  
+  When trying of order the boxplot facets by median of the two different year, we met the problem that the order doesn't change when using reorder() function. Thanks to the contribution from ....
+
+
+The reorder_within() and scale_x_reordered() function comes from : https://github.com/dgrtwo/drlib/blob/master/R/reorder_within.R
+
+
+```{r}
+#Summer waiting time 
+soarin_month <- attractions %>% group_by(year, month) %>% summarize(mean_soarin = mean(soarin, na.rm = TRUE))
+
+
+soarin_byhour <- soarin.hour %>%
+  mutate(month = month(date, label = TRUE))%>%
+  mutate(summer = month %in% c(6,7,8)) %>%
+  group_by(month,weekend, hour) %>%
+  summarize(mean = mean(SPOSTMIN)) %>%
+  filter(as.integer(hour)>=8)
+
+ggplot(soarin_byhour, aes(x=hour, y=mean, fill=weekend)) +
+  geom_bar(position="dodge", stat="identity") +
+  facet_wrap(~month)+
+  ggtitle("Soarin Average Waiting Time Split by month")+
+  theme(axis.text.x=element_text(size=5))+
+  ylab("Average waiting time")
+  
+```
+
+```{r}
+dwarf <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour")
+
+dwarf <- dwarf %>%
+  mutate(year = year(date), month = month(date, label=TRUE), weekday = wday(date, label=T), 
+         weekend = weekday %in% c("Sat","Sun"), summer = month %in% c(6,7,8))%>%
+  left_join(.,bigmeta %>% select(DATE, HOLIDAY) %>% rename(date=DATE)) %>%
+  filter(year>=2021) %>%
+  group_by(month,weekend, hour) %>%
+  summarize(mean = mean(SPOSTMIN)) %>%
+  filter(as.integer(hour)>=8)
+  
+ggplot(dwarf, aes(x=hour, y=mean, fill=weekend)) +
+  geom_bar(position="dodge", stat="identity") +
+  facet_wrap(~month)+
+  ggtitle("Seven Dwarf Mining Train Average Waiting Time by month")+
+  theme(axis.text.x=element_text(size=5))+
+  ylab("Average waiting time")
+
+```
+Before studying this dataset, we always believed that waiting time on weekends are longer than on weekdays. The reason is that children are off school and adults are off work on weekends, thus there will be more people in the park.   
+However, when exploring our data, we were shocked that sometimes the waiting time at weekends are shorter than on weekdays. And this raised our attention and thus we decide to explore more on that.  
+Our first guess was that this is just the pattern of a given year since we were looking at the data of year 2021. However, when we plotted the average yearly data, we fount that the waiting time on weekends is still longer than on weekdays.   
+And thus our second hypothesis was that this is a pattern of summer, when children are having summer break. As we all know, the main target audience of Disney World are children and teenagers. Thus we guess that children can visit the part on weekdays, resulting in the lower average waiting time on weekends. As a consequence, we used data from 2015 to 2021 to calculate the average monthly waiting time. From this graph, we can see that apparently our guessing is right. Weekend average waiting time are shorter than weekdays in June, July and August, which are the months of summer break. And this is not only limited to the Seven Dwarf Mining Train ride as shown in the graph, but also on many other popular rides. 
+
+```{r}
+attractions %>% filter(year==2019) %>% 
+  select(date, month,soarin, splash, dinosaur, ee, spaceship)%>%
+    left_join(bigmeta %>% select(DATE, WDWMEANTEMP) %>% filter(WDWMEANTEMP>10) %>% rename(date=DATE))%>%
+  select(-date)%>%
+  parcoords( rownames = F
+    , brushMode = "1D-axes"
+    , reorderable = T
+    , queue = T
+    , color = list(
+      colorBy = "month"
+      ,colorScale = "scaleOrdinal"
+      ,colorScheme = "schemeCategory10"
+      )
+    , alpha = .3
+    , withD3 = TRUE
+
+    )
+
+head(metadata)
+newds <- soarin %>% left_join(bigmeta %>% rename(date=DATE) %>% select(date,WDWSEASON)) %>%
+  left_join(., avatar %>% rename(Avatar_Flight_of_Passage = avatar)) %>% 
+  left_join(., dinosaur ) %>%
+  left_join(., ee %>% rename(Expedition_Everest = ee)) %>% 
+  left_join(., safari%>% rename(Kilimanjaro_Safaris = safari)) %>%
+  left_join(., navi %>% rename(Navi_River_Jouney = navi)) %>% 
+  left_join(., pirate %>% rename(Pirates_Of_The_Caribbean = pirate)) %>%
+  left_join(., rnrc %>% rename(Rock_n_Roller_Roaster = rnrc)) %>% 
+  left_join(., sevendwarf %>% rename(Seven_Dwarf_Mining_Train = sevendwarf)) %>%
+  left_join(., slinkydog %>% rename(Slinky_Dog_Dash = slinkydog)) %>% 
+  left_join(., spaceship %>% rename(Spaceship_Earth = spaceship)) %>%
+  left_join(., splash %>% rename(SplashMountain = splash)) %>% 
+  left_join(., toystory %>% rename(Toy_Story_Mania = toystory))%>%
+  select(-date) %>%relocate(soarin, .after=WDWSEASON ) %>%
+  group_by(WDWSEASON) %>%
+  summarise(across(c(soarin:Toy_Story_Mania), mean, na.rm=TRUE)) %>% na.omit()
+  
+
+```
+```{r}
+#biplot
+library(redav)
+
+newds <- newds %>% mutate(WDWSEASON = factor(WDWSEASON))
+draw_biplot(newds, key_axis = "Seven_Dwarf_Mining_Train", fix_sign = TRUE)+
+  ggtitle("Biplot of rides vs. Holiday Season")+
+  scale_x_continuous(limits = c(-8, 8))+
+  scale_y_continuous(limits = c(-5, 5))
+```
+  A biplot is constructed using Singular Value Decomposition, and is a graphing technique to help us understand relationship in variables. In biplots, the directions of each variable's axis matter rather than the length of the axis, and the values can be read by projecting onto the axis of the variable. Moreover, points that are clustered together represent close correlations. Similarly, arrows that have similar orientations represent close correlations. 
+  This biplot uses waiting data of the selected 12 rides to perform PCA calculations. For data, we used daily average waiting time of the rides with a time range of Jan 1 2015 to Dec 31 2021. The arrows represent the different rides, where the points represent different holiday seasons. The seasons include popular seasons such as Christmas peak, Summer Break, Easter, Columbus day, but also off-peaks such as winter, spring, September low, etc. By using a biplot, we can clearly see the relationship between different rides and the seasons. The graph shows a key axis for Seven Dwarf Mining Train, which is a popular ride located in Magic Kingdom. The projections of each season on the axis represent the average waiting time during each season. For instance, we can see that Christmas peak has the longest waiting time, with an average of 110 minutes. And September low has the shortest average time for around 60 minutes. Many other seasons are clustered together, ranging from 70 to 95 minutes.  
+  We can also see that the arrow of ride Navigator River Journey is orthogonal to Seven Dwarf Mining Train, which shows that waiting of the two rides are not correlated. Other uncorrelated rides examples are Splash Mountain and rides such as Expedition Everest, Toy Story Mania, etc, where rides are clustered together. 
+  As we can see, there are many clusters of the axes, showing a close relationship of these rides. For instance, Pirates of the Carribean, Slinky Dog Dash, Rock n Roller Roaster and Seven Dwarf Mining Train are clustered together, while Avatar Flight of Passage and Kilimanjaro Safaris form another cluster. 
+  And in terms of the holiday seasons, seasons such as summer break and Jul 4th, spring are clustered together, and peak holidays such as Columbus Day, Christmas, Presidents Week have another cluster. By looking at the biplot, we can clearly understand the relationship between different variables. 
+```{r}
+#~different parks
+
+parks <- attractions %>% filter(year>=2019) %>%
+  select(-c(date,  weekday, weekofmonth, weekend)) %>%
+  group_by(month, year)%>%
+  summarise(across(c(soarin:toystory), mean, na.rm=T)) %>%  ungroup() %>%
+  pivot_longer(cols = !c(month,year), names_to = "ride", values_to = "value") %>%
+  mutate(park = ifelse(ride %in% c("soarin", "spaceship"), "Epcot", 
+                       ifelse(ride %in% c("rnrc", "slinky", "toystory"), "Hollywood Studios", 
+                              ifelse(ride %in% c("avatar", "dinosaur", "ee", "safari", "navi"), "Animal Kingdom", "Magic Kingdom")))) %>% group_by(park, month,year) %>% na.omit() %>%summarise(mean = mean(value)) 
+
+ggplot(parks, aes(x=month, y=mean))+geom_bar(stat="identity", width=0.8, fill="darkgrey")+
+  scale_x_continuous(n.breaks=12)+
+  facet_grid(rows = vars(park), cols = vars(year), scales = "fixed") +
+  ggtitle("Average Monthly Waiting time of different parks after year 2019")+
+  ylab("Average waiting time of park")+
+  theme_grey(9)
+
+```
+This graphs shows the relationship between average waiting time and month, with respect to years and different parks. As mentioned before, Disney was closed from mid March to Jul 10 in year 2020 because of Covid-19, thus we have some missing data in year 2020. In order to show the change of waiting pattern before and after Covid-19, we selected data from year 2019 to 2021, and use bar plots here to visualize the average waiting times for different months.   
+  First of all, when comparing through rows, we can see that the waiting averages have different patterns for the four parks. Among these parks, Epcot has the shortest waiting time for approximately 30 minutes on average. The waiting pattern is similar in 2018 and 2019, and slightly decreases after covid, with a low of around 15 minutes in August and September in 2021. 
+  Among the four parks, Animal Kingdom and Hollywood Studios are relatively popular in 2019, with waiting time averages around 60 minutes. The average waiting time decreases to around 30 minutes after covid. In general, the two parks have very similar waiting time distributions from 2019 to 2021. 
+  And for Magic Kingdom, the average waiting time remains similar from 2019 to 2021, with an average around 60 minutes in 2019, and a slight decrease to average of 45 minutes after covid. The relatively small decrease in waiting average compared to other parks may arise from the fact that the main audience of Magic Kingdom are children, while the others are more targeting towards adults and teenagers. 
+  And when looking at the monthly patterns, we can see that September is the month with the lowest waiting time for all parks and all years, while March, June, July and and August have higher waiting time averages than other months. In 2019, March is a high month, while July in 2021 have higher averages. 
+  By analyzing this graph, we recommend anyone who are planning to visit Disney World, and are free in all months, to visit there in September since there is a pattern that Septembers have shorter waiting times on average. 
+  

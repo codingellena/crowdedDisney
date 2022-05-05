@@ -64,6 +64,157 @@ splash <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv")
 toystory <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv")%>% 
   rename(toystory=mean_everyday)
 
+#by hour
+soarin.hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+avatar.hour <- cleanthis("https://cdn.touringplans.com/datasets/flight_of_passage.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+dinosaur.hour <- cleanthis("https://cdn.touringplans.com/datasets/dinosaur.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+ee.hour <- cleanthis("https://cdn.touringplans.com/datasets/expedition_everest.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+safari.hour <- cleanthis("https://cdn.touringplans.com/datasets/kilimanjaro_safaris.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+navi.hour <- cleanthis("https://cdn.touringplans.com/datasets/navi_river.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+pirate.hour <- cleanthis("https://cdn.touringplans.com/datasets/pirates_of_caribbean.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+rnrc.hour <- cleanthis("https://cdn.touringplans.com/datasets/rock_n_rollercoaster.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+sevendwarf.hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+slinkydog.hour <- cleanthis("https://cdn.touringplans.com/datasets/slinky_dog.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+spaceship.hour <- cleanthis("https://cdn.touringplans.com/datasets/spaceship_earth.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+splash.hour <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+toystory.hour <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+                      
+
+whichyear <- c(2019,2021)
+
+soarin.hour <- soarin.hour %>% filter(year %in% whichyear ) %>% select(year, SPOSTMIN)%>% mutate(ride = "soarin") 
+
+avatar.hour <- avatar.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "avatar") 
+  
+dinosaur.hour <- dinosaur.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "dinosaur") 
+  
+ee.hour <- ee.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "ee") 
+
+safari.hour <- safari.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "safari") 
+
+navi.hour <- navi.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "navi") 
+
+pirate.hour <- pirate.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "pirate") 
+
+rnrc.hour <- rnrc.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "rnrc") 
+
+sevendwarf.hour <- sevendwarf.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "sevendwarf") 
+
+slinkydog.hour <- slinkydog.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "slinkydog") 
+
+spaceship.hour <- spaceship.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "spaceship") 
+
+splash.hour <- splash.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "splash") 
+
+toystory.hour<- toystory.hour %>% filter(year %in% whichyear) %>% select(year, SPOSTMIN)%>% mutate(ride = "toystory") 
+
+  
+#Multiple Boxplot of year 2019
+#allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, ee.hour, safari.hour ,navi.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour)
+allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour)
+
+allinone %>% 
+  ggplot(aes(x=reorder(ride,-SPOSTMIN, median), y=SPOSTMIN))+
+  geom_boxplot(varwidth = TRUE)+
+  facet_wrap(~year)+
+  ggtitle("Multiple boxplot of all rides")+
+  xlab("Ride name")+
+  ylab("Waiting Time")+
+  theme_grey(14)+
+  theme(axis.text.x=element_text(size=9))
+
+
+```
+```{r}
+soarin.hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+avatar.hour <- cleanthis("https://cdn.touringplans.com/datasets/flight_of_passage.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+dinosaur.hour <- cleanthis("https://cdn.touringplans.com/datasets/dinosaur.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+ee.hour <- cleanthis("https://cdn.touringplans.com/datasets/expedition_everest.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+safari.hour <- cleanthis("https://cdn.touringplans.com/datasets/kilimanjaro_safaris.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+navi.hour <- cleanthis("https://cdn.touringplans.com/datasets/navi_river.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+pirate.hour <- cleanthis("https://cdn.touringplans.com/datasets/pirates_of_caribbean.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+rnrc.hour <- cleanthis("https://cdn.touringplans.com/datasets/rock_n_rollercoaster.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+sevendwarf.hour <- cleanthis("https://cdn.touringplans.com/datasets/7_dwarfs_train.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+slinkydog.hour <- cleanthis("https://cdn.touringplans.com/datasets/slinky_dog.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+spaceship.hour <- cleanthis("https://cdn.touringplans.com/datasets/spaceship_earth.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+splash.hour <- cleanthis("https://cdn.touringplans.com/datasets/splash_mountain.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+toystory.hour <- cleanthis("https://cdn.touringplans.com/datasets/toy_story_mania.csv", by="hour") %>%
+  mutate(month = month(datetime), year = year(datetime) )
+ 
+whichyear <- 2021
+soarin.hour <- soarin.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(soarin = SPOSTMIN)%>%
+  pivot_longer(.,cols= "soarin",names_to = "Ride", values_to = "value")
+
+avatar.hour <- avatar.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(avatar = SPOSTMIN)%>%
+  pivot_longer(.,cols= "avatar",names_to = "Ride", values_to = "value")
+  
+dinosaur.hour <- dinosaur.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(dinosaur = SPOSTMIN)%>%
+  pivot_longer(.,cols= "dinosaur",names_to = "Ride", values_to = "value")
+  
+ee.hour <- ee.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(ee = SPOSTMIN)%>%
+  pivot_longer(.,cols= "ee",names_to = "Ride", values_to = "value")
+
+safari.hour <- safari.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(ee = SPOSTMIN)%>%
+  pivot_longer(.,cols= "ee",names_to = "Ride", values_to = "value")
+
+navi.hour <- navi.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(navi = SPOSTMIN)%>%
+  pivot_longer(.,cols= "navi",names_to = "Ride", values_to = "value")
+
+pirate.hour <- pirate.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(pirate = SPOSTMIN)%>%
+  pivot_longer(.,cols= "pirate",names_to = "Ride", values_to = "value")
+
+rnrc.hour <- rnrc.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(rnrc = SPOSTMIN)%>%
+  pivot_longer(.,cols= "rnrc",names_to = "Ride", values_to = "value")
+
+sevendwarf.hour <- sevendwarf.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(sevendwarf = SPOSTMIN)%>%
+  pivot_longer(.,cols= "sevendwarf",names_to = "Ride", values_to = "value")
+
+slinkydog.hour <- slinkydog.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(slinkydog = SPOSTMIN)%>%
+  pivot_longer(.,cols= "slinkydog",names_to = "Ride", values_to = "value")
+
+spaceship.hour <- spaceship.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(spaceship = SPOSTMIN)%>%
+  pivot_longer(.,cols= "spaceship",names_to = "Ride", values_to = "value")
+
+splash.hour <- splash.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(splash = SPOSTMIN)%>%
+  pivot_longer(.,cols= "splash",names_to = "Ride", values_to = "value")
+
+toystory.hour<- toystory.hour %>% filter(year==whichyear) %>% select( SPOSTMIN)%>% rename(toystory = SPOSTMIN)%>%
+  pivot_longer(.,cols= "toystory",names_to = "Ride", values_to = "value")
+
+allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, ee.hour, safari.hour ,navi.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour) 
+mul.box2 <- allinone %>% 
+  ggplot(aes(x=reorder(Ride,-value, median), y=value))+
+  geom_boxplot(varwidth = TRUE)+
+  ggtitle("Multiple boxplot of all rides 2021")+
+  xlab("Ride name")+
+  ylab("Waiting Time")+
+  theme_grey(14)+
+  theme(axis.text.x=element_text(size=9))
 
 ```
 
@@ -74,10 +225,10 @@ weekofmonth <- function(date){
   out <- as.integer(strftime(date, format = "%U"))-as.integer(strftime(floor_date(date, unit="months"), format = "%U"))+1
   return(out)
 }
-timedf$year <- factor(year(timedf$date))
-timedf$month <- factor(month(timedf$date))
-#timedf$weekofmonth <- weekofmonth(timedf$date)
-timedf$weekday <- factor(wday(timedf$date,label = TRUE))
+timedf$year <- year(timedf$date)
+timedf$month <- month(timedf$date)
+timedf$weekofmonth <- weekofmonth(timedf$date)
+timedf$weekday <- wday(timedf$date,label = TRUE)
 timedf$weekend <- ifelse(timedf$weekday %in% c("Sat","Sun") , TRUE, FALSE)
 
 ######Overall dataset of Daily time of all attractions 
@@ -141,9 +292,19 @@ soarin_dt <- data.frame(hour = as.character(seq(10,23)))
 soarin_dt <- left_join(soarin_dt, soarin_byhour %>% filter(weekend==FALSE) %>% select(hour, mean) %>%  rename(weekday = mean) %>% ungroup(), by="hour") %>% select(-weekend)
 soarin_dt <- soarin_dt %>% left_join(., soarin_byhour %>% filter(weekend==TRUE) %>%rename(Weekend_mean = mean), by="hour") %>% select(-weekend)
 soarin_dt
-write.csv(soarin_dt, file="soarin_int.csv")
+
 barplot(soarin_byhour$mean)
 
+```
+
+```{r}
+#attractions split by weekend and month, analyze whether weekends have longer or shorter waiting time for all rides
+filtered <- attractions %>% filter(year>=2019) %>% group_by(weekend) %>% summarise(across(c(soarin:pirate),mean, na.rm=TRUE))
+
+ggplot(filtered)
+test <- filtered %>% pivot_longer(cols=!"weekend", values_to = "time", names_to = "ride") %>%filter(weekend==FALSE) %>% factor(ride)
+test$ride <- factor(test$ride)
+  
 ```
 
 ```{r}
@@ -194,10 +355,10 @@ events_data <- metadata %>%
   pivot_longer(!DATE,names_to = "Park_name", values_to = "events") %>% 
   drop_na("events") %>% 
   mutate("Park_name"=replace(Park_name,Park_name=="WDWeventN","Walt Disney World"),
-         "Park_name"=replace(Park_name,Park_name=="MKeventN","Magic Kindom"),
+         "Park_name"=replace(Park_name,Park_name=="MKeventN","Magic Kingdom"),
          "Park_name"=replace(Park_name,Park_name=="EPeventN","Epcot"),
          "Park_name"=replace(Park_name,Park_name=="HSeventN","Hollywood Studios"),
-         "Park_name"=replace(Park_name,Park_name=="AKeventN","Animal Kindom")
+         "Park_name"=replace(Park_name,Park_name=="AKeventN","Animal Kingdom")
   )
 ```
 >>>>>>> e6d7a4f97aff05d8eb5007e5205676bbdc36c321
