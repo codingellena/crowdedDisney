@@ -1,8 +1,24 @@
 # Data sources
 
 
+## Data link
 
-```{r}
-# change the path to the url later
-metadata <- read.csv("/Users/ellenazhang/Study/Columbia/5293/final project/metadata.csv", na.strings = "")
-```
+Data Link https://touringplans.com/walt-disney-world/crowd-calendar#DataSets
+
+We get this open data set from touringplans.com, which is a website that monitor the crowd level in both Disneyland and Walt Disney World. Here we study the waiting time of Walt Disney World, which contains the following five different parks: Magic Kingdom, EPCOT, Disney's Animal Kingdom, Disney's Hollywood Studios and Walt Disney World.
+
+## Basic information
+
+The webpage contains a metadata, providing basic information for each day of operation. This includes date, ticket price type(value, regular, peak), season, temperature of the day, event, etc. The third hyperlink (Facts) contains information about the average waiting time and the duration of each attraction. The dataset has a date range from 01/01/2015 to 08/31/2021.
+
+Besides these, we use waiting times for the selected attractions listed in the separated files. The data is collected on a continuous basis every day, which allows us study the waiting time based on time of the day. The date range is from 01/01/2015 to 12/28/2021.
+
+In addition, we also use the entities dataset, which describes the waiting times and duration of 95 attractions. The waiting time is measured through calculating the average waiting time per hundred persons. The duration describes the time it takes for a ride, which we believe have a strong relationship with the user's experience. The waiting time and duration are both in minutes.
+
+## Foreseeing issues or problems
+
+There are many missing values in metadata and the missing seems to be periodically. For example, the feature measuring ticket price only have values from 02/28/2016 to 06/29/2019, although the dataset has a date range from 01/01/2015 to 08/31/2021.
+
+Besides, in attraction specific files, there exists a missing pattern between the feature `waiting time post` and `actual waiting time`, which is, when one feature has value, the other would miss value.
+
+These missing patterns make it difficult to do data visualization and data analysis. We will address these problems in the data transformation and missing value sections.
