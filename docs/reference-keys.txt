@@ -14,12 +14,12 @@ results
 waiting-time-analysis
 ticket-price
 waiting-duration-ratio
-events-in-disney
+soarin-waiting-time-jul-2021
 seven-dwarf-mining-train-waiting-time-calendar-heatmap
 multiple-boxplot-of-year-2019
 seven-dwarf-mining-train-weekendweekday-pattern
 biplot-on-attraction-waiting-time-and-season
-events-in-disney-1
+events-in-disney
 park-waiting-pattern-before-and-after-covid
 interactive
 interactive-plot-link

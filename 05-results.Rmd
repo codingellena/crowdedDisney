@@ -37,25 +37,6 @@ It is a good choice to visit Disney in September which yields the shortest waiti
 ```
 
 
-
-```{r}
-# label by day of week
-attractions %>% 
-  select(date,soarin) %>% 
-  filter(date>=as.Date("2021-07-01")&date<=("2021-07-31")) %>% 
-  ggplot(aes(date,soarin))+
-  geom_label(aes(label=wday(date,label=T)))+
-  geom_line(color="cornflowerblue")+
-  scale_x_date(date_labels="%b\n%d",date_breaks = "1 day")+
-  ggtitle("Waiting time of Soarin in July 2021 (min)")+
-  theme(plot.title = element_text(hjust = 0.5))+
-  ylab("waiting time (min)")
-```
-  
-To map the relationship between the waiting time and weekday, I make the chart above using the waiting time of attraction Soarin in July 2021. 
-
-The plot shows that the waiting time has a pattern of having longer waiting time in weekdays and shorter waiting time on weekends which is oppose to the common sense. The waiting time reaches its peak on 8th, 21st, 27th, 28th July which are mainly Tuesday-Thursday and reaches its minimum mainly on Friday, Saturday and Sunday. My assumption for this pattern is Disney tends to close some of the attractions for some time in weekdays but fully open on weekends.
-
 ## Ticket price
 
 ```{r}
@@ -88,18 +69,25 @@ ggplot(ratio_data,
   
 We pay special attention on the line of waiting time/duration ratio = 1, which means one can enjoy the event with the same waiting time. The waiting time in more than half of the events in Cleveland Disney were less than playing time. However in the popular events, the waiting time were significantly at least 3 times more than playing time. The first 3 popular events, the waiting time were even 9 times more than playing times. 
 
-## Events in Disney
-
+## Soarin Waiting time Jul 2021
 ```{r}
-# barplot 
-events_data %>% 
-  ggplot(aes(fct_rev(fct_infreq(events)),fill=Park_name))+
-  geom_bar()+
-  coord_flip()+
-  ggtitle("Events in five Disney Parks")+
-  xlab("Event name")+
-  scale_fill_brewer(palette = "Accent")
+# label by day of week
+attractions %>% 
+  select(date,soarin) %>% 
+  filter(date>=as.Date("2021-07-01")&date<=("2021-07-31")) %>% 
+  ggplot(aes(date,soarin))+
+  geom_label(aes(label=wday(date,label=T)))+
+  geom_line(color="cornflowerblue")+
+  scale_x_date(date_labels="%b\n%d",date_breaks = "1 day")+
+  ggtitle("Waiting time of Soarin in July 2021 (min)")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  ylab("waiting time (min)")
 ```
+  
+
+To map the relationship between the waiting time and weekday, I make the chart above using the waiting time of attraction Soarin in July 2021. 
+
+The plot shows that the waiting time has a pattern of having longer waiting time in weekdays and shorter waiting time on weekends which is oppose to the common sense. The waiting time reaches its peak on 8th, 21st, 27th, 28th July which are mainly Tuesday-Thursday and reaches its minimum mainly on Friday, Saturday and Sunday. My assumption for this pattern is Disney tends to close some of the attractions for some time in weekdays but fully open on weekends.
 
 ## Seven Dwarf Mining Train waiting time calendar heatmap
 ```{r}
@@ -153,7 +141,7 @@ allinone %>%
   xlab("Ride")+
   ylab("Waiting Time (Minutes)")+
   theme_grey(10)+
-  theme(axis.text.x=element_text(size=7), legend.position = "bottom")+
+  theme(axis.text.x=element_text(size=6), legend.position = "bottom")+
   labs(fill = "Park")
 
 
