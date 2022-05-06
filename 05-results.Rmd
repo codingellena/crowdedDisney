@@ -125,7 +125,9 @@ And in year 2021, when Covid is more under control, the average waiting time is 
   
 
 
+
 ## Multiple Boxplot of year 2019
+
 ```{r}
 allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, ee.hour, safari.hour ,navi.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour)  %>%
   mutate(park = ifelse(ride %in% c("soarin", "spaceship"), "Epcot", 
