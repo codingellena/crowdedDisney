@@ -22,7 +22,7 @@ meta <- read_csv("https://cdn.touringplans.com/datasets/metadata.csv")
 ```{r}
 #metadata transformation
 bigmeta <- meta %>% 
-  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWMEANTEMP, WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN)%>%
+  select(DATE,WDW_TICKET_SEASON,DAYOFWEEK,DAYOFYEAR,WEEKOFYEAR,MONTHOFYEAR, YEAR, HOLIDAYPX, HOLIDAYM,HOLIDAY, WDWMEANTEMP, WDWeventN,MKeventN,EPeventN,HSeventN,AKeventN, WDWSEASON)%>%
   mutate(DATE=as.Date(DATE, format=c("%m/%d/%Y")))
 
 head(bigmeta)
@@ -158,15 +158,6 @@ soarin_dt <- soarin_dt %>% left_join(., soarin_byhour %>% filter(weekend==TRUE) 
 ```
 
 
-```{r}
-#attractions split by weekend and month, analyze whether weekends have longer or shorter waiting time for all rides
-filtered <- attractions %>% filter(year>=2019) %>% group_by(weekend) %>% summarise(across(c(soarin:pirate),mean, na.rm=TRUE))
-
-ggplot(filtered)
-test <- filtered %>% pivot_longer(cols=!"weekend", values_to = "time", names_to = "ride") %>%filter(weekend==FALSE) %>% factor(ride)
-test$ride <- factor(test$ride)
-  
-```
 
 ```{r}
 #Suppose we want to use Jul 2021 data to see what the waiting time will be if we go this year

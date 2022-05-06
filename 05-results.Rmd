@@ -117,7 +117,7 @@ ggplot(attractions %>% mutate(month = month(date, label=T)), aes(weekday, fct_re
 
 ```
   
-This is a calendar heat map for the waiting time of Seven Dwarf Mining Train, a popular ride located in Magic Kingdom of Walt Disney World. From the calendar heat map for the “Seven Dwarf Mining Train’” ride of Disney World, we can easily see which days have a high average waiting time and which days have a low waiting time. And by comparing different levels of color fill over years, we can see the overall waiting pattern during a year and find which months have lower average waiting time. And we can also compare across years to see the overall crowdedness of the year. For instance, the color fills for year 2021 are lighter than the other years, which can be considered directly impacted by the current pandemic. The grey colors represent the missing data, since Disney was impacted by Covid-19 and closed from Mar to July in 2021. Some of the data are missing after then.   
+This is a calendar heat map for the waiting time of Seven Dwarf Mining Train, a popular ride located in Magic Kingdom of Walt Disney World. From the calendar heat map for the “Seven Dwarf Mining Train” ride of Disney World, we can easily see which days have a high average waiting time and which days have a low waiting time. And by comparing different levels of color fill over years, we can see the overall waiting pattern during a year and find which months have lower average waiting time. And we can also compare across years to see the overall crowdedness of the year. For instance, the color fills for year 2021 are lighter than the other years, which can be considered directly impacted by the current pandemic. The grey colors represent the missing data, since Disney was impacted by Covid-19 and closed from Mar to July in 2021. Some of the data are missing after then.   
 
 If we compare across all the years, 2018 and 2019 seem to be the more crowded years. Some peaks in waiting time appear in early January(winter break) and mid March(spring break), as well as late December (Christmas). The averages of waiting time reach the maximum of the spectrum, with a value of around 150 minutes. 
 
@@ -125,7 +125,7 @@ And in year 2021, when Covid is more under control, the average waiting time is 
   
 
 
-#Multiple Boxplot of year 2019
+## Multiple Boxplot of year 2019
 ```{r}
 allinone <- rbind(soarin.hour, avatar.hour,dinosaur.hour, ee.hour, safari.hour ,navi.hour, pirate.hour, rnrc.hour, sevendwarf.hour, slinkydog.hour, spaceship.hour, splash.hour, toystory.hour)  %>%
   mutate(park = ifelse(ride %in% c("soarin", "spaceship"), "Epcot", 
@@ -157,6 +157,7 @@ allinone %>%
 
 
 ```
+
 This is a multiple box plot of the selected 12 rides in Walt Disney World in Orlando. Because of the pandemic, Disney World was closed from Mar 15 to Jul 10 in 2020. As a consequence, the waiting time data of year 2020 was of less importance of our study and we chose the data of year 2019 and 2021 for comparison. The ride names of the abbreviations can be found in the data folder.
   
 The plot shows the overall distribution of the average waiting of the selected 12 rides, ordered by their medians. The four different colors stand for the four parks that each ride is located. The statistics of each ride is computed from hourly waiting time averages, from Jan 1 to Dec 31.  
@@ -195,6 +196,7 @@ ggplot(dwarf, aes(x=hour, y=mean, fill=weekend)) +
   ylab("Average waiting time(min)")
 
 ```
+  
 Before studying this dataset, we always believed that waiting time on weekends are longer than on weekdays. The reason is that children are off school and adults are off work on weekends, thus there will be more people in the park.    
 
 However, when exploring our data, we are shocked that sometimes the waiting time at weekends are shorter than on weekdays. And this raises our attention and thus we decide to explore more on that.  
@@ -234,6 +236,7 @@ draw_biplot(newds, key_axis = "Seven_Dwarf_Mining_Train", fix_sign = TRUE)+
   scale_x_continuous(limits = c(-8, 8))+
   scale_y_continuous(limits = c(-5, 5))
 ```
+  
 A biplot is constructed using Singular Value Decomposition, and is a graphing technique to help us understand relationship between variables. In biplots, the directions of each variable's axis matter rather than the length of the axis, and the values can be read by projecting onto the axis of the variable. Moreover, points that are clustered together represent close correlations. Similarly, arrows that have similar orientations represent close correlations.  
   
 This biplot uses waiting data of the selected 12 rides to perform PCA calculations. For data, we used daily average waiting time of the rides with a time range of Jan 1 2015 to Dec 31 2021. The arrows represent the different rides, where the points represent different holiday seasons. The seasons include popular seasons such as Christmas peak, Summer Break, Easter, Columbus day, but also off-peaks such as winter, spring, September low, etc.  
@@ -288,6 +291,7 @@ ggplot(parks, aes(x=month, y=mean))+geom_bar(stat="identity", width=0.8, fill="d
   theme_grey(9)
 
 ```
+  
 This graph shows the relationship between average waiting time and month, with respect to years and different parks. As mentioned before, Disney was closed from mid March to Jul 10 in year 2020 because of Covid-19, thus we have some missing data in year 2020. In order to show the change of waiting pattern before and after Covid-19, we selected data from year 2019 and 2021, and use bar plots here to visualize the average waiting times for different months.  
   
 First of all, when comparing across rows, we can see that the waiting averages have different patterns for the four parks. Among these parks, Epcot has the shortest waiting time for approximately 30 minutes on average. The waiting pattern is quite uniform but a low in September for 2019, and the average slightly decreases after Covid, with a low of around 15 minutes in August and September in 2021.   

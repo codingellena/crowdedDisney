@@ -1,8 +1,9 @@
-#Interactive
+# Interactive
 
-Click on this link below:
+## Interactive plot link
 https://vizhub.com/evadai55/cc4cacf3bbdf431f9d25d60b61da410d?edit=files&file=index.html&mode=full
 
+## Description
   Planning to visit Walt Disney World in Orlando this summer but afraid of the long line? Or wondering the waiting time is shorter on weekdays? Visit this link to study the waiting pattern!  
   
   Here is a visualization of the real waiting time of some popular rides in Jul 2021. From this graph, you can see average daily waiting time of each ride of Jul 2021. The graph also tells information such as date, day of week, temperature of the day, as well as mean waiting time of the month.  
