@@ -1,2 +1,16 @@
 # Conclusion
 
+After reading all these graphs, does our analysis give you a brand new understanding on amusement park crowd pattern? Hopefully this can help you with planning your next visit to Walt Disney World!
+
+To conclude, we find that popular rides usually have larger waiting-duration ratios. And the waiting patterns perform differently in different months. Among all months, September usually has the shortest wait, while March, June and August have longer waits. And from our comparison of crowd between 2019 and 2021, we can see that the medians of the rides mostly decrease after Covid. Given the current pandemic, there are fewer visitors in Walt Disney World. Thus if you are interested in visiting there, this may be a good opportunity with a shorter wait. But remember to wear masks and stay safe!
+
+And in terms of weekend and weekday, the weekend means are usually lower than weekday means during summer break, namely June to August, but are higher in other months. Another reason is that since most people spend a whole week or more in Orlando, weekends and weekdays do not make a huge difference in Disney World, when compared with other places such as Disneyland in California. And if you want to skip the long line, try to get up early to catch the park opening or stay up late and join the line before the park closes. 
+
+However, there are still some limitations of the project. First of all, since the dataset from the original source is huge and time range spans from 2015 to 2021, there are some missing values for a number of days. And given the fact that Disney was closed due to Covid-19 in 2020, this may create some inconsistency of our analysis. What's more, it is sometimes cumbersome to calculate statistics needed for graphing because we need to transform hundred thousand rows of data into a single average value. Thus the transformations of the data take a lot time when were are pre-processing them. 
+
+Secondly, the data is only up to Dec 31 2021, thus we are unable to see the trends of the current months in 2022. And given the continuously evolving Covid virus variants, the crowd data after 2020 may not give perfect information because of the usual outbreaks of Covid cases. 
+
+A possible future improvement to our analysis is to connect Covid cases data to the crowd data of Disney World and study the effect of the pandemic on crowd level. And this may require some linear regression techniques besides the graphing techniques we learned in class.
+
+The study on the crowd data of Walt Disney World provides us with a thorough understanding of amusement park waiting time. This project not only helps us strengthen our skills of graphing using R and D3, but also provides an opportunity to study the topic that we are interested in. And we hope this project can give you some insights on the crowd of Disney World. 
+
